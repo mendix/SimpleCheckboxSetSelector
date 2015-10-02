@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="SimpleCheckboxSetSelector.widget.SimpleCheckboxSetSelector" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+	<name>Simple Checkbox Set Selector</name>
+	<description></description>
+	<properties>
+		<property key="dataSourceType" type="enumeration" defaultValue="xpath">
+			<caption>Data source type</caption>
+			<category>Data source</category>
+			<description>The method for retrieving the objects.</description>
+			<enumerationValues>
+				<enumerationValue key="xpath">XPath</enumerationValue>
+				<enumerationValue key="mf">Microflow</enumerationValue>
+			</enumerationValues>
+		</property>
+		<property key="dataAssociation" isPath="yes" type="entity" required="true" pathType="referenceSet">
+			<caption>Datasource entity</caption>
+			<category>Data source</category>
+			<description>The entity of which the checkbox list will be composed.</description>
+		</property>
+		<property key="datasourceMf" type="microflow" required="false">
+			<caption>Data source microflow</caption>
+			<category>Data source (Microflow)</category>
+			<description></description>
+			<returnType type="Void" />
+		</property>
+		<property key="constraint" type="entityConstraint" required="false" entityProperty="dataAssociation">
+			<caption>XPath constraint</caption>
+			<category>Data source (XPath)</category>
+			<description>Optional constraint to filter the available options</description>
+		</property>
+		<property key="showLabel" type="boolean" defaultValue="true">
+			<caption>Show Label</caption>
+			<category>Display</category>
+			<description>Show a label for the field.</description>
+		</property>  
+		<property key="fieldCaption" type="translatableString" required="false" multiline="false">
+			<caption>Label Caption</caption>
+			<category>Display</category>
+			<description>Specify the caption to use for the field</description>
+		</property>
+		<property key="sortAttr" type="attribute" entityProperty="dataAssociation" required="false">
+			<caption>Sort attribute(XPath)</caption>
+			<category>Data source (XPath)</category>
+			<description>This fields provides the sort attribute of the list.</description>
+			<attributeTypes>
+				<attributeType name="AutoNumber" />
+				<attributeType name="Boolean" />
+				<attributeType name="Currency" />
+				<attributeType name="DateTime" />
+				<attributeType name="Enum" />
+				<attributeType name="Float" />
+				<attributeType name="Integer" />
+				<attributeType name="Long" />
+				<attributeType name="String" />
+			</attributeTypes>
+		</property>
+		<property key="sortOrder" type="enumeration" defaultValue="asc">
+			<caption>Sort order(XPath)</caption>
+			<category>Data source</category>
+			<description>The sort order.</description>
+			<enumerationValues>
+				<enumerationValue key="asc">Ascending</enumerationValue>
+				<enumerationValue key="desc">Descending</enumerationValue>
+			</enumerationValues>
+		</property>
+		<property key="displayAttribute" type="attribute" required="true" entityProperty="dataAssociation">
+			<caption>Display attribute</caption>
+			<category>Data source</category>
+			<description>The display attribute of the checkbox option.</description>
+			<attributeTypes>
+				<attributeType name="String" />
+			</attributeTypes>
+		</property>
+		<property key="formOrientation" type="enumeration" defaultValue="horizontal">
+			<caption>Form orientation</caption>
+			<category>Display</category>
+			<description>The orientation of the label and checkbox items</description>
+			<enumerationValues>
+				<enumerationValue key="horizontal">Horizontal</enumerationValue>
+				<enumerationValue key="vertical">Vertical</enumerationValue>
+			</enumerationValues>
+		</property>
+		<property key="direction" type="enumeration" defaultValue="vertical">
+			<caption>Direction</caption>
+			<category>Display</category>
+			<description>This field determines the display direction.</description> 
+			<enumerationValues>
+				<enumerationValue key="horizontal">Horizontal</enumerationValue>
+				<enumerationValue key="vertical">Vertical</enumerationValue>
+			</enumerationValues>
+		</property>
+		<property key="labelWidth" type="integer" defaultValue="4">
+			<caption>Label Width (weight)</caption>
+			<category>Display</category>
+			<description>The column size of the label control (only applied with horizontal orientation)</description>
+		</property>
+		<!-- TODO 
+		<property key="addSelectAll" type="boolean" defaultValue="true">
+			<caption>Add Select All</caption>
+			<category>Display</category>
+			<description>Add a 'Select All' checkbox at the top of the option list</description>
+		</property>
+			-->
+		<property key="onChangeMicroflow" type="microflow" required="false">
+			<caption>On change</caption>
+			<category>Events</category>
+			<description>Run this microflow when an item is ticked or unticked</description>
+			<returnType type="Void"/>
+		</property>
+	</properties>
+</widget>
+
