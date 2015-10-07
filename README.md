@@ -15,6 +15,6 @@ Visualize all possible options in your user interface, instead of forcing your u
 - Displaying the list in a horizontal or vertical direction.
 - Option to show a label(as is done for input widgets since Mx 5.18)
 - Attaching a microflow on the onchange event.
-- 
+
 ## Installation
 Import the widget to your project and add it to a dataview on a page. Configure the properties to determine how the widget will behave in your application.
