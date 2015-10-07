@@ -2,6 +2,8 @@
 <widget id="SimpleCheckboxSetSelector.widget.SimpleCheckboxSetSelector" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
 	<name>Simple Checkbox Set Selector</name>
 	<description></description>
+	<icon>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjExR/NCNwAAAJ9JREFUOE+tjoEKwyAQQ/fpfq4IIgUREaQjdgnXYYfCDh6kuTPN6y/jnDt3+Ty9BsbOTAN678uwhYIgWms/sTfQtyYQtdZHsLc30GyigFLKwGp+E+uxiQJyzgMeW2339NlEAcdxDPjAwp29YRMFpJQEH377ds8mCogx3ph5BDs2UUAIYRncs4kCvPfL4J5NFLALm4wADozZH5+YBuzhzjf1aMBTGJgNXQAAAABJRU5ErkJggg==</icon>
+
 	<properties>
 		<property key="dataSourceType" type="enumeration" defaultValue="xpath">
 			<caption>Data source type</caption>
