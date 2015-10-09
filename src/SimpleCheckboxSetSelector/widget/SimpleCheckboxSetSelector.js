@@ -200,7 +200,7 @@ define([
 			// Reset subscriptions.
 			_resetSubscriptions: function () {
 
-				this.unsubscribe();
+				this.unsubscribeAll();
 				
 				if (this._contextObj) {
 					//validationHandle =
