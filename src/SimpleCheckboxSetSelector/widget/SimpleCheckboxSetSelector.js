@@ -35,7 +35,7 @@ define([
 			sortOrder: false,
 			displayAttribute: "",
 			readonly: false,
-			onchangeAction: "",
+			onChangeMicroflow: "",
 
 			// Internal variables. Non-primitives created in the prototype are shared between all widget instances.
 			_direction: "vertical",
@@ -200,34 +200,26 @@ define([
 			// Reset subscriptions.
 			_resetSubscriptions: function () {
 
-				var validationHandle = null,
-					objectHandle = null,
-					attrHandle = null;
-
-				// Release handles on previous object, if any.
-				if (this._handles) {
-					this._handles.forEach(function (handle) {
-						mx.data.unsubscribe(handle);
-					});
-					this._handles = [];
-				}
-
-				// When a mendix object exists create subscribtions. 
+				this.unsubscribe();
+				
 				if (this._contextObj) {
-					validationHandle = mx.data.subscribe({
+					//validationHandle =
+					this.subscribe({
 						guid: this._contextObj.getGuid(),
 						val: true,
 						callback: dojoLang.hitch(this, this._handleValidation)
 					});
 
-					objectHandle = mx.data.subscribe({
+					//objectHandle =
+					this.subscribe({
 						guid: this._contextObj.getGuid(),
 						callback: dojoLang.hitch(this, function (guid) {
 							this._updateRendering();
 						})
 					});
 
-					attrHandle = mx.data.subscribe({
+					//attrHandle = 
+					this.subscribe({
 						guid: this._contextObj.getGuid(),
 						attr: this._reference,
 						callback: dojoLang.hitch(this, function (guid, attr, attrValue) {
@@ -235,7 +227,7 @@ define([
 						})
 					});
 
-					this.handles = [validationHandle, objectHandle, attrHandle];
+					
 				}
 			},
 
@@ -297,8 +289,6 @@ define([
 						labelNode = this._createLabelNode(option, this._checkboxOptions[option]);
 						checkboxNode = this._createCheckboxNode(option, this._checkboxOptions[option]);
 
-						this._addOnclickToCheckboxItem(labelNode, checkboxNode, i);
-
 						dojoConstruct.place(checkboxNode, labelNode, "first");
 
 						if(this.direction === "horizontal"){
@@ -333,7 +323,8 @@ define([
 
 			_createLabelNode: function (key, value) {
 
-				var labelNode = null;
+				var labelNode = null,
+					spanNode = null;
 
 				labelNode = dojoConstruct.create("label");
 
@@ -351,10 +342,12 @@ define([
 					dojoClass.add(labelNode, "checkbox-inline");
 				}
 
-				dojoConstruct.place(dojoConstruct.create("span", {
+				spanNode = dojoConstruct.place(dojoConstruct.create("span", {
 					"innerHTML": value
 				}), labelNode);
 
+				
+				
 				return labelNode;
 			},
 
@@ -385,12 +378,14 @@ define([
 					}, this);
 				}
 
+				this._addOnclickToCheckboxItem(checkboxNode, key);
+				
 				return checkboxNode;
 			},
 
-			_addOnclickToCheckboxItem: function (labelNode, checkboxNode) {
+		_addOnclickToCheckboxItem: function (checkboxNode, rbvalue) {
 
-				this.connect(labelNode, "onclick", dojoLang.hitch(this, function () {
+			this.connect(checkboxNode, "onclick", dojoLang.hitch(this, function () {
 
 					if (this._isReadOnly || 
 						this._contextObj.isReadonlyAttr(this._reference)) {
@@ -398,17 +393,17 @@ define([
 					}
 
 					if(checkboxNode.checked) {
-						this._contextObj.addReference(this._reference, dojoAttr.get(checkboxNode, "value"));
+						this._contextObj.addReference(this._reference, rbvalue);
 					}
 					else {
-						this._contextObj.removeReferences(this._reference, [dojoAttr.get(checkboxNode, "value")]);
+						this._contextObj.removeReferences(this._reference, rbvalue);
 					}
 
-					if (this.onchangeAction) {
+					if (this.onChangeMicroflow) {
 						mx.data.action({
 							params: {
 								applyto: "selection",
-								actionname: this.onchangeAction,
+								actionname: this.onChangeMicroflow,
 								guids: [this._contextObj.getGuid()]
 							},
 							error: function (error) {
