@@ -14,7 +14,7 @@
 				<enumerationValue key="mf">Microflow</enumerationValue>
 			</enumerationValues>
 		</property>
-		<property key="dataAssociation" isPath="yes" type="entity" required="true" pathType="referenceSet">
+		<property key="dataAssociation" isPath="yes" type="entity" required="true" pathType="referenceSet" allowNonPersistableEntities="true">
 			<caption>Datasource entity</caption>
 			<category>Data source</category>
 			<description>The entity of which the checkbox list will be composed.</description>
