@@ -96,6 +96,11 @@
 			<category>Display</category>
 			<description>The column size of the label control (only applied with horizontal orientation)</description>
 		</property>
+		<property key="showMore" type="integer" defaultValue="0">
+			<caption>Show More count</caption>
+			<category>Display</category>
+			<description>If this is larger than zero, only that amount of items will be shown first. All others will behind a Show More button.</description>
+		</property>
 		<!-- TODO 
 		<property key="addSelectAll" type="boolean" defaultValue="true">
 			<caption>Add Select All</caption>

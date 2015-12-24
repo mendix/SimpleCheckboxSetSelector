@@ -4,3 +4,9 @@
 .checkboxMainContainer input[type="checkbox"] {
 	margin: 4px 0 0 -20px;
 }
+.checkboxMainContainer .showmoreButton {
+	display: none;
+}
+.checkboxMainContainer .showmore-hidden {
+	display: none;
+}
