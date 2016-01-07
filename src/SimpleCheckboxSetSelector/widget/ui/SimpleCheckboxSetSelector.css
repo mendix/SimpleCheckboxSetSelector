@@ -6,6 +6,7 @@
 }
 .checkboxMainContainer .showmoreButton {
 	display: none;
+	cursor: pointer;
 }
 .checkboxMainContainer .showmore-hidden {
 	display: none;

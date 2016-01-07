@@ -1,4 +1,5 @@
 /*jslint white:true, nomen: true, plusplus: true */
+/*jshint -W083*/
 /*global mx, define, require, browser, devel, console, document, jQuery, mxui, dojo */
 /*mendix */
 define([
@@ -48,22 +49,29 @@ define([
 			_contextObj: null,
 			_alertDiv: null,
 			_checkboxOptions: null,
+			_checkboxOptionsArray: [],
 			_isReadOnly: false,
 			_assocName: null,
 			_locatedInListview: false,
 			_checkboxesArr: null,
 			_showMoreHidden: true,
+			_showMoreButtonHandler: null,
+
+			_showMoreStarted: false,
 
 			/**
 			 * Mendix Widget methods.
 			 * ======================
 			 */
 			constructor: function () {
+				// Uncomment next line to start debugging
+				//logger.level(logger.DEBUG);
 				this._handles = [];
 			},
 
 			// DOJO.WidgetBase -> PostCreate is fired after the properties of the widget are set.
 			postCreate: function () {
+				logger.debug(this.id + '.postCreate');
 				this._checkboxesArr = [];
 				this._entity = this.dataAssociation.split('/')[1];
 				this._reference = this.dataAssociation.split('/')[0];
@@ -72,7 +80,7 @@ define([
 				if (this.sortAttr === '') {
 					this.sortAttr = this.displayAttribute;
 				}
-				
+
 				// adjust the template based on the display settings.
 				if (this.showLabel) {
 					if (dojoClass.contains(this.checkboxLabel, 'hidden')) {
@@ -115,17 +123,17 @@ define([
 			 */
 
 			update: function (obj, callback) {
-				console.debug(this.id + ".update");
+				logger.debug(this.id + '.update');
 
 				this._contextObj = obj;
 				this._resetSubscriptions();
 				this._setCheckboxOptions();
 
 				callback();
-
 			},
 
 			_setCheckboxOptions: function () {
+				logger.debug(this.id + '._setCheckboxOptions');
 
 				if (this._contextObj) {
 					if (this.dataSourceType === "xpath") {
@@ -144,6 +152,7 @@ define([
 
 			// Rerender the interface.
 			_updateRendering: function () {
+				logger.debug(this.id + '._updateRendering');
 
 				if (this._contextObj !== null) {
 					if (dojoClass.contains(this.domNode, 'hidden')) {
@@ -163,6 +172,7 @@ define([
 
 			// Handle validations.
 			_handleValidation: function (validations) {
+				logger.debug(this.id + '._handleValidation');
 				this._clearValidations();
 
 				var validation = validations[0],
@@ -179,12 +189,14 @@ define([
 
 			// Clear validations.
 			_clearValidations: function () {
+				logger.debug(this.id + '._clearValidations');
 				dojoConstruct.destroy(this._alertDiv);
 				this._alertDiv = null;
 			},
 
 			// Show an error message.
 			_showError: function (message) {
+				logger.debug(this.id + '._showError');
 				if (this._alertDiv !== null) {
 					dojoHtml.set(this._alertDiv, message);
 					return true;
@@ -198,14 +210,14 @@ define([
 
 			// Add a validation.
 			_addValidation: function (message) {
+				logger.debug(this.id + '._addValidation');
 				this._showError(message);
 			},
 
 			// Reset subscriptions.
 			_resetSubscriptions: function () {
-
+				logger.debug(this.id + '._resetSubscriptions');
 				this.unsubscribeAll();
-
 				if (this._contextObj) {
 					//validationHandle =
 					this.subscribe({
@@ -222,7 +234,7 @@ define([
 						})
 					});
 
-					//attrHandle = 
+					//attrHandle =
 					this.subscribe({
 						guid: this._contextObj.getGuid(),
 						attr: this._reference,
@@ -230,12 +242,11 @@ define([
 							this._updateRendering();
 						})
 					});
-
-
 				}
 			},
 
 			_getDataFromXPath: function () {
+				logger.debug(this.id + '._getDataFromXPath');
 				if (this._contextObj) {
 					mx.data.get({
 						xpath: "//" + this._entity + this.constraint.replace(/\[%CurrentObject%\]/g, this._contextObj.getGuid()),
@@ -247,32 +258,59 @@ define([
 						callback: dojoLang.hitch(this, this._populateCheckboxOptions)
 					});
 				} else {
-					console.warn("Warning: No context object available.");
+					logger.warn(this.id + "._getDataFromXPath -- Warning: No context object available.");
 				}
 			},
 
 			_getDataFromDatasource: function () {
+				logger.debug(this.id + '._getDataFromDatasource');
 				this._execMF(this._contextObj, this.datasourceMf, dojoLang.hitch(this, this._populateCheckboxOptions));
 			},
 
 			_populateCheckboxOptions: function (objs) {
-
-				var mxObj = null,
-					i = 0;
+				logger.debug(this.id + '._populateCheckboxOptions');
 
 				this._checkboxOptions = {};
-				for (i = 0; i < objs.length; i++) {
+				this._checkboxOptionsArray = [];
 
-					mxObj = objs[i];
-
+				for (var i = 0; i < objs.length; i++) {
+					var mxObj = objs[i];
 					this._checkboxOptions[mxObj.getGuid()] = mxObj.get(this.displayAttribute);
+
+					var checkboxObj = {
+						//i: i,
+						guid: mxObj.getGuid(),
+						value: mxObj.get(this.displayAttribute),
+						checked: false
+					};
+
+					var referencedObjects = this._contextObj.get(this._reference);
+					if (referencedObjects !== null && referencedObjects !== "") {
+						dojoArray.forEach(referencedObjects, function (ref, i) {
+							if (mxObj.getGuid() === ref) {
+								checkboxObj.checked = true;
+							}
+						}, this);
+					}
+
+					this._checkboxOptionsArray.push(checkboxObj);
 				}
+
+				this._checkboxOptionsArray.sort(function (a, b) {
+					if (a.checked && !b.checked) {
+						return -1;
+					} else if (!a.checked && b.checked) {
+						return 1;
+					}
+					return 0;
+				});
 
 				this._updateRendering();
 			},
 
 
 			_createCheckboxNodes: function (mxObjArr) {
+				logger.debug(this.id + '._createCheckboxNodes');
 				var mxObj = null,
 					i = 0,
 					j = 0,
@@ -282,30 +320,28 @@ define([
 					nodelength = 0;
 
 				nodelength = this.checkboxComboContainer.children.length;
+				this._checkboxesArr = [];
 
 				if (this.direction === "horizontal") {
 					dojoConstruct.empty(this.checkboxComboContainer);
 				}
 
-				for (var option in this._checkboxOptions) {
-					if (this._checkboxOptions.hasOwnProperty(option)) {
-
-						labelNode = this._createLabelNode(option, this._checkboxOptions[option]);
-						checkboxNode = this._createCheckboxNode(option, this._checkboxOptions[option]);
+				for (var o = 0; o < this._checkboxOptionsArray.length; o++) {
+					var option = this._checkboxOptionsArray[o];
+					if (option.value) {
+						labelNode = this._createLabelNode(option.guid, option.value);
+						checkboxNode = this._createCheckboxNode(option.guid, option.value);
 
 						dojoConstruct.place(checkboxNode, labelNode, "first");
-
-						
 
 						if (this.direction === "horizontal") {
 							dojoConstruct.place(labelNode, this.checkboxComboContainer, "last");
 							this._checkboxesArr.push(checkboxNode);
 						} else {
-							//an enclosing div element is required to vertically align a  in bootstrap. 
+							//an enclosing div element is required to vertically align a  in bootstrap.
 							if (this.checkboxComboContainer.children[i]) {
 								enclosingDivElement = this.checkboxComboContainer.children[i];
-							}
-							else {
+							} else {
 								enclosingDivElement = dojoConstruct.create("div", { "class": "checkbox" });
 							}
 							dojoConstruct.place(labelNode, enclosingDivElement, "only");
@@ -314,16 +350,7 @@ define([
 							}
 							this._checkboxesArr.push(enclosingDivElement);
 						}
-						
-						if (this.showMore > 0 && i >= this.showMore) {
-							if (enclosingDivElement) {
-								dojoClass.add(enclosingDivElement, 'showmore-hidden');
-							}
-							else {
-								dojoClass.add(checkboxNode, 'showmore-hidden');
-							}
-						}
-						
+
 						i++;
 					}
 				}
@@ -333,38 +360,59 @@ define([
 						dojoConstruct.destroy(this.checkboxComboContainer.children[i]);
 					}
 				}
-				if (this.showMore > 0) {
+
+				// i is the number of checkboxes.
+				if (this.showMore > 0 && i > this.showMore) {
 					this._enableShowMore();
 				}
 			},
-			
-			_enableShowMore: function () {
-				dojoStyle.set(this.showMoreButton, 'display', 'inline-block');
-				on(this.showMoreButton, "click", dojoLang.hitch(this, function () {
-					if (this.showMoreHidden) {
-						for (var i = 0; i < this._checkboxesArr.length; i++) {
-							var node = this._checkboxesArr[i];
-							if (dojoClass.contains(node, 'showmore-hidden'))
-								dojoClass.remove(node, 'showmore-hidden');
-						}
-						
-						this.showMoreButton.innerText = 'Hide';
-						this.showMoreHidden = false;
-					} else {
-						for (var i = 0; i < this._checkboxesArr.length; i++) {
-							var node = this._checkboxesArr[i];
-							if (i >= this.showMore) {
-								dojoClass.add(node, 'showmore-hidden');
-							}
-						}
-						this.showMoreButton.innerText = 'Show more';
-						this.showMoreHidden = true;
+
+			_setShowMoreHidden: function () {
+				logger.debug(this.id + '._setShowMoreHidden');
+				for (var i = 0; i < this._checkboxesArr.length; i++) {
+					var node = this._checkboxesArr[i];
+					if (i >= this.showMore) {
+						dojoClass.add(node, 'showmore-hidden');
 					}
-				}));
+				}
+				this.showMoreButton.innerHTML = 'Show more';
+				this.showMoreHidden = true;
+			},
+
+			_setShowMoreShown: function () {
+				logger.debug(this.id + '._setShowMoreShown');
+				for (var i = 0; i < this._checkboxesArr.length; i++) {
+					var node = this._checkboxesArr[i];
+					if (dojoClass.contains(node, 'showmore-hidden')) {
+						dojoClass.remove(node, 'showmore-hidden');
+					}
+				}
+
+				this.showMoreButton.innerHTML = 'Hide';
+				this.showMoreHidden = false;
+			},
+
+			_enableShowMore: function () {
+				logger.debug(this.id + '._enableShowMore');
+				if (!this._showMoreStarted) {
+					this._setShowMoreHidden();
+					this._showMoreStarted = true;
+				}
+
+				dojoStyle.set(this.showMoreButton, 'display', 'inline-block');
+				if (!this._showMoreButtonHandler) {
+					this._showMoreButtonHandler = on(this.showMoreButton, "click", dojoLang.hitch(this, function () {
+						if (this.showMoreHidden) {
+							this._setShowMoreShown();
+						} else {
+							this._setShowMoreHidden();
+						}
+					}));
+				}
 			},
 
 			_createLabelNode: function (key, value) {
-
+				logger.debug(this.id + '._createLabelNode');
 				var labelNode = null,
 					spanNode = null;
 
@@ -388,12 +436,11 @@ define([
 					"innerHTML": value
 				}), labelNode);
 
-
-
 				return labelNode;
 			},
 
 			_createCheckboxNode: function (key, value, index) {
+				logger.debug(this.id + '._createCheckboxNode');
 				var checkboxNode = null,
 					referencedObjects = this._contextObj.get(this._reference);
 
@@ -426,6 +473,7 @@ define([
 			},
 
 			_addOnclickToCheckboxItem: function (checkboxNode, rbvalue) {
+				logger.debug(this.id + '._addOnclickToCheckboxItem');
 
 				this.connect(checkboxNode, "onclick", dojoLang.hitch(this, function () {
 
@@ -457,7 +505,7 @@ define([
 			},
 
 			_execMF: function (obj, mf, callback) {
-
+				logger.debug(this.id + '._execMF', mf);
 				var params = {
 					applyto: "selection",
 					actionname: mf,
@@ -483,6 +531,7 @@ define([
 			},
 
 			_reserveSpace: function () {
+				logger.debug(this.id + '._reserveSpace');
 				var i = 0;
 				for (i; i < 50; i++) {
 					dojoConstruct.place(dojoConstruct.create("div", { "class": "checkbox", innerHTML: "&nbsp;" }), this.checkboxComboContainer);
