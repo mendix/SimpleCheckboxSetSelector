@@ -294,14 +294,19 @@ define([
 					this._checkboxOptionsArray.push(checkboxObj);
 				}
 
-				this._checkboxOptionsArray.sort(function (a, b) {
-					if (a.checked && !b.checked) {
-						return -1;
-					} else if (!a.checked && b.checked) {
-						return 1;
-					}
-					return 0;
-				});
+                var _checked = [];
+                var _unchecked = [];
+
+                for (var x = 0; x < this._checkboxOptionsArray.length; x++) {
+                    var checkbox = this._checkboxOptionsArray[x];
+                    if (checkbox.checked) {
+                        _checked.push(checkbox);
+                    } else {
+                        _unchecked.push(checkbox);
+                    }
+                }
+
+                this._checkboxOptionsArray = _checked.concat(_unchecked);
 
 				this._updateRendering();
 			},
