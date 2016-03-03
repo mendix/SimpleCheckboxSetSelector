@@ -3,19 +3,19 @@
 /*global mx, define, require, browser, devel, console, document, jQuery, mxui, dojo */
 /*mendix */
 define([
-	'dojo/_base/declare',
-	'mxui/widget/_WidgetBase',
-	'dijit/_TemplatedMixin',
-	'mxui/dom',
-	'dojo/on',
-	'dojo/dom-class',
-	'dojo/dom-style',
-	'dojo/dom-construct',
-	'dojo/dom-attr',
-	'dojo/_base/lang',
-	'dojo/html',
-	'dojo/_base/array',
-	'dojo/text!SimpleCheckboxSetSelector/widget/template/SimpleCheckboxSetSelector.html'
+	"dojo/_base/declare",
+	"mxui/widget/_WidgetBase",
+	"dijit/_TemplatedMixin",
+	"mxui/dom",
+	"dojo/on",
+	"dojo/dom-class",
+	"dojo/dom-style",
+	"dojo/dom-construct",
+	"dojo/dom-attr",
+	"dojo/_base/lang",
+	"dojo/html",
+	"dojo/_base/array",
+	"dojo/text!SimpleCheckboxSetSelector/widget/template/SimpleCheckboxSetSelector.html"
 ],
 	function (declare, _WidgetBase, _TemplatedMixin, dom, on, dojoClass, dojoStyle, dojoConstruct, dojoAttr, dojoLang, dojoHtml, dojoArray, widgetTemplate) {
 		"use strict";
@@ -71,20 +71,20 @@ define([
 
 			// DOJO.WidgetBase -> PostCreate is fired after the properties of the widget are set.
 			postCreate: function () {
-				logger.debug(this.id + '.postCreate');
+				logger.debug(this.id + ".postCreate");
 				this._checkboxesArr = [];
-				this._entity = this.dataAssociation.split('/')[1];
-				this._reference = this.dataAssociation.split('/')[0];
+				this._entity = this.dataAssociation.split("/")[1];
+				this._reference = this.dataAssociation.split("/")[0];
 				this._labelAttribute = this.displayAttribute;
 
-				if (this.sortAttr === '') {
+				if (this.sortAttr === "") {
 					this.sortAttr = this.displayAttribute;
 				}
 
 				// adjust the template based on the display settings.
 				if (this.showLabel) {
-					if (dojoClass.contains(this.checkboxLabel, 'hidden')) {
-						dojoClass.remove(this.checkboxLabel, 'hidden');
+					if (dojoClass.contains(this.checkboxLabel, "hidden")) {
+						dojoClass.remove(this.checkboxLabel, "hidden");
 					}
 
 					if (this.formOrientation === "horizontal") {
@@ -93,8 +93,8 @@ define([
 						comboLabelWidth = this.labelWidth > 11 ? 11 : this.labelWidth;
 
 						var comboControlWidth = 12 - comboLabelWidth,
-							comboLabelClass = 'col-sm-' + comboLabelWidth,
-							comboControlClass = 'col-sm-' + comboControlWidth;
+							comboLabelClass = "col-sm-" + comboLabelWidth,
+							comboControlClass = "col-sm-" + comboControlWidth;
 
 						dojoClass.add(this.checkboxLabel, comboLabelClass);
 						dojoClass.add(this.checkboxComboContainer, comboControlClass);
@@ -103,13 +103,13 @@ define([
 					this.checkboxLabel.innerHTML = this.fieldCaption;
 				}
 				else {
-					if (!dojoClass.contains(this.checkboxLabel, 'hidden')) {
-						dojoClass.add(this.checkboxLabel, 'hidden');
+					if (!dojoClass.contains(this.checkboxLabel, "hidden")) {
+						dojoClass.add(this.checkboxLabel, "hidden");
 					}
 				}
 
-				if (this.readOnly || this.get('disabled') || this.readonly) {
-					//this.readOnly isn't available in client API, this.get('disabled') works correctly since 5.18.
+				if (this.readOnly || this.get("disabled") || this.readonly) {
+					//this.readOnly isn"t available in client API, this.get("disabled") works correctly since 5.18.
 					//this.readonly is a widget property
 					this._isReadOnly = true;
 				}
@@ -123,7 +123,7 @@ define([
 			 */
 
 			update: function (obj, callback) {
-				logger.debug(this.id + '.update');
+				logger.debug(this.id + ".update");
 
 				this._contextObj = obj;
 				this._resetSubscriptions();
@@ -133,7 +133,7 @@ define([
 			},
 
 			_setCheckboxOptions: function () {
-				logger.debug(this.id + '._setCheckboxOptions');
+				logger.debug(this.id + "._setCheckboxOptions");
 
 				if (this._contextObj) {
 					if (this.dataSourceType === "xpath") {
@@ -152,17 +152,17 @@ define([
 
 			// Rerender the interface.
 			_updateRendering: function () {
-				logger.debug(this.id + '._updateRendering');
+				logger.debug(this.id + "._updateRendering");
 
 				if (this._contextObj !== null) {
-					if (dojoClass.contains(this.domNode, 'hidden')) {
-						dojoClass.remove(this.domNode, 'hidden');
+					if (dojoClass.contains(this.domNode, "hidden")) {
+						dojoClass.remove(this.domNode, "hidden");
 					}
 					this._createCheckboxNodes();
 				}
 				else {
-					if (!dojoClass.contains(this.domNode, 'hidden')) {
-						dojoClass.add(this.domNode, 'hidden');
+					if (!dojoClass.contains(this.domNode, "hidden")) {
+						dojoClass.add(this.domNode, "hidden");
 					}
 				}
 
@@ -172,7 +172,7 @@ define([
 
 			// Handle validations.
 			_handleValidation: function (validations) {
-				logger.debug(this.id + '._handleValidation');
+				logger.debug(this.id + "._handleValidation");
 				this._clearValidations();
 
 				var validation = validations[0],
@@ -189,14 +189,14 @@ define([
 
 			// Clear validations.
 			_clearValidations: function () {
-				logger.debug(this.id + '._clearValidations');
+				logger.debug(this.id + "._clearValidations");
 				dojoConstruct.destroy(this._alertDiv);
 				this._alertDiv = null;
 			},
 
 			// Show an error message.
 			_showError: function (message) {
-				logger.debug(this.id + '._showError');
+				logger.debug(this.id + "._showError");
 				if (this._alertDiv !== null) {
 					dojoHtml.set(this._alertDiv, message);
 					return true;
@@ -210,13 +210,13 @@ define([
 
 			// Add a validation.
 			_addValidation: function (message) {
-				logger.debug(this.id + '._addValidation');
+				logger.debug(this.id + "._addValidation");
 				this._showError(message);
 			},
 
 			// Reset subscriptions.
 			_resetSubscriptions: function () {
-				logger.debug(this.id + '._resetSubscriptions');
+				logger.debug(this.id + "._resetSubscriptions");
 				this.unsubscribeAll();
 				if (this._contextObj) {
 					//validationHandle =
@@ -246,7 +246,7 @@ define([
 			},
 
 			_getDataFromXPath: function () {
-				logger.debug(this.id + '._getDataFromXPath');
+				logger.debug(this.id + "._getDataFromXPath");
 				if (this._contextObj) {
 					mx.data.get({
 						xpath: "//" + this._entity + this.constraint.replace(/\[%CurrentObject%\]/g, this._contextObj.getGuid()),
@@ -263,12 +263,12 @@ define([
 			},
 
 			_getDataFromDatasource: function () {
-				logger.debug(this.id + '._getDataFromDatasource');
+				logger.debug(this.id + "._getDataFromDatasource");
 				this._execMF(this._contextObj, this.datasourceMf, dojoLang.hitch(this, this._populateCheckboxOptions));
 			},
 
 			_populateCheckboxOptions: function (objs) {
-				logger.debug(this.id + '._populateCheckboxOptions');
+				logger.debug(this.id + "._populateCheckboxOptions");
 
 				this._checkboxOptions = {};
 				this._checkboxOptionsArray = [];
@@ -315,7 +315,7 @@ define([
 
 
 			_createCheckboxNodes: function (mxObjArr) {
-				logger.debug(this.id + '._createCheckboxNodes');
+				logger.debug(this.id + "._createCheckboxNodes");
 				var mxObj = null,
 					i = 0,
 					j = 0,
@@ -373,38 +373,38 @@ define([
 			},
 
 			_setShowMoreHidden: function () {
-				logger.debug(this.id + '._setShowMoreHidden');
+				logger.debug(this.id + "._setShowMoreHidden");
 				for (var i = 0; i < this._checkboxesArr.length; i++) {
 					var node = this._checkboxesArr[i];
 					if (i >= this.showMore) {
-						dojoClass.add(node, 'showmore-hidden');
+						dojoClass.add(node, "showmore-hidden");
 					}
 				}
-				this.showMoreButton.innerHTML = 'Show more';
+				this.showMoreButton.innerHTML = "Show more";
 				this.showMoreHidden = true;
 			},
 
 			_setShowMoreShown: function () {
-				logger.debug(this.id + '._setShowMoreShown');
+				logger.debug(this.id + "._setShowMoreShown");
 				for (var i = 0; i < this._checkboxesArr.length; i++) {
 					var node = this._checkboxesArr[i];
-					if (dojoClass.contains(node, 'showmore-hidden')) {
-						dojoClass.remove(node, 'showmore-hidden');
+					if (dojoClass.contains(node, "showmore-hidden")) {
+						dojoClass.remove(node, "showmore-hidden");
 					}
 				}
 
-				this.showMoreButton.innerHTML = 'Hide';
+				this.showMoreButton.innerHTML = "Hide";
 				this.showMoreHidden = false;
 			},
 
 			_enableShowMore: function () {
-				logger.debug(this.id + '._enableShowMore');
+				logger.debug(this.id + "._enableShowMore");
 				if (!this._showMoreStarted) {
 					this._setShowMoreHidden();
 					this._showMoreStarted = true;
 				}
 
-				dojoStyle.set(this.showMoreButton, 'display', 'inline-block');
+				dojoStyle.set(this.showMoreButton, "display", "inline-block");
 				if (!this._showMoreButtonHandler) {
 					this._showMoreButtonHandler = on(this.showMoreButton, "click", dojoLang.hitch(this, function () {
 						if (this.showMoreHidden) {
@@ -417,7 +417,7 @@ define([
 			},
 
 			_createLabelNode: function (key, value) {
-				logger.debug(this.id + '._createLabelNode');
+				logger.debug(this.id + "._createLabelNode");
 				var labelNode = null,
 					spanNode = null;
 
@@ -445,7 +445,7 @@ define([
 			},
 
 			_createCheckboxNode: function (key, value, index) {
-				logger.debug(this.id + '._createCheckboxNode');
+				logger.debug(this.id + "._createCheckboxNode");
 				var checkboxNode = null,
 					referencedObjects = this._contextObj.get(this._reference);
 
@@ -478,7 +478,7 @@ define([
 			},
 
 			_addOnclickToCheckboxItem: function (checkboxNode, rbvalue) {
-				logger.debug(this.id + '._addOnclickToCheckboxItem');
+				logger.debug(this.id + "._addOnclickToCheckboxItem");
 
 				this.connect(checkboxNode, "onclick", dojoLang.hitch(this, function () {
 
@@ -510,7 +510,7 @@ define([
 			},
 
 			_execMF: function (obj, mf, callback) {
-				logger.debug(this.id + '._execMF', mf);
+				logger.debug(this.id + "._execMF", mf);
 				var params = {
 					applyto: "selection",
 					actionname: mf,
@@ -536,7 +536,7 @@ define([
 			},
 
 			_reserveSpace: function () {
-				logger.debug(this.id + '._reserveSpace');
+				logger.debug(this.id + "._reserveSpace");
 				var i = 0;
 				for (i; i < 50; i++) {
 					dojoConstruct.place(dojoConstruct.create("div", { "class": "checkbox", innerHTML: "&nbsp;" }), this.checkboxComboContainer);
