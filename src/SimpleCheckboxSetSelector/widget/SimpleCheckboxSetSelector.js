@@ -28,7 +28,7 @@ define([
 
 			// DOM elements
 			checkboxComboContainer: null,
-			showMoreButton : null,
+			showMoreButton: null,
 
 			// Parameters configurable in Business Modeler.
 			dataSourceType: null,
@@ -493,18 +493,25 @@ define([
 					}
 
 					if (this.onChangeMicroflow) {
-						mx.data.action({
-							params: {
-								applyto: "selection",
-								actionname: this.onChangeMicroflow,
-								guids: [this._contextObj.getGuid()]
-							},
-							error: function (error) {
-								console.log("_addOnclickToCheckboxItem: XAS error executing microflow; " + error.description);
-							}
-						});
+						this._triggerOnChange();
 					}
 				}));
+			},
+
+			onchangeQueued: false,
+
+			_triggerOnChange: function () {
+				if (this.onChangeDelay > 0) {
+					if (!this.onchangeQueued) {
+						setTimeout(dojoLang.hitch(this, function () {
+							this._execMF(this._contextObj, this.onChangeMicroflow);
+							this.onchangeQueued = false;
+						}), this.onChangeDelay);
+						this.onchangeQueued = true;
+					}
+				} else {
+					this._execMF(this._contextObj, this.onChangeMicroflow);
+				}
 			},
 
 			_execMF: function (obj, mf, callback) {

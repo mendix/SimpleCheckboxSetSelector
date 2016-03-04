@@ -114,6 +114,11 @@
 			<description>Run this microflow when an item is ticked or unticked</description>
 			<returnType type="Void"/>
 		</property>
+		<property key="onChangeDelay" type="integer" defaultValue="0">
+			<caption>On change delay</caption>
+			<category>Events</category>
+			<description>A delay (in ms) for the onchange microflow to be triggered. This can be used to provide smoother UX.</description>
+		</property>
 	</properties>
 </widget>
 
