@@ -114,8 +114,6 @@ define([
 					this._isReadOnly = true;
 				}
 
-				//this._reserveSpace();
-
 			},
 
 			/**
@@ -540,14 +538,6 @@ define([
 						console.log(error.description);
 					}
 				}, this);
-			},
-
-			_reserveSpace: function () {
-				logger.debug(this.id + "._reserveSpace");
-				var i = 0;
-				for (i; i < 50; i++) {
-					dojoConstruct.place(dojoConstruct.create("div", { "class": "checkbox", innerHTML: "&nbsp;" }), this.checkboxComboContainer);
-				}
 			}
 		});
 	});
