@@ -498,17 +498,17 @@ define([
 				}));
 			},
 
-			onchangeQueued: false,
+			onchangeTimeout: null,
 
 			_triggerOnChange: function () {
 				if (this.onChangeDelay > 0) {
-					if (!this.onchangeQueued) {
-						setTimeout(dojoLang.hitch(this, function () {
-							this._execMF(this._contextObj, this.onChangeMicroflow);
-							this.onchangeQueued = false;
-						}), this.onChangeDelay);
-						this.onchangeQueued = true;
+					if (this.onchangeTimeout) {
+						clearTimeout(this.onchangeTimeout);
+						this.onchangeTimeout = null;
 					}
+					this.onchangeTimeout = setTimeout(dojoLang.hitch(this, function () {
+						this._execMF(this._contextObj, this.onChangeMicroflow);
+					}), this.onChangeDelay);
 				} else {
 					this._execMF(this._contextObj, this.onChangeMicroflow);
 				}
