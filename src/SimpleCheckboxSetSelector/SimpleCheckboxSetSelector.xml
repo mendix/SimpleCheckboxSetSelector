@@ -34,7 +34,7 @@
 			<caption>Show Label</caption>
 			<category>Display</category>
 			<description>Show a label for the field.</description>
-		</property>  
+		</property>
 		<property key="fieldCaption" type="translatableString" required="false" multiline="false">
 			<caption>Label Caption</caption>
 			<category>Display</category>
@@ -85,7 +85,7 @@
 		<property key="direction" type="enumeration" defaultValue="vertical">
 			<caption>Direction</caption>
 			<category>Display</category>
-			<description>This field determines the display direction.</description> 
+			<description>This field determines the display direction.</description>
 			<enumerationValues>
 				<enumerationValue key="horizontal">Horizontal</enumerationValue>
 				<enumerationValue key="vertical">Vertical</enumerationValue>
@@ -101,13 +101,18 @@
 			<category>Display</category>
 			<description>If this is larger than zero, only that amount of items will be shown first. All others will behind a Show More button.</description>
 		</property>
-		<!-- TODO 
+		<!-- TODO
 		<property key="addSelectAll" type="boolean" defaultValue="true">
 			<caption>Add Select All</caption>
 			<category>Display</category>
 			<description>Add a 'Select All' checkbox at the top of the option list</description>
 		</property>
 			-->
+		<property key="readonly" type="boolean" defaultValue="false">
+			<caption>Read only</caption>
+			<category>Display</category>
+			<description>The checkboxes are read only if selected</description>
+		</property>
 		<property key="onChangeMicroflow" type="microflow" required="false">
 			<caption>On change</caption>
 			<category>Events</category>
