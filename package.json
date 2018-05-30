@@ -25,7 +25,7 @@
   },
   "generatorVersion": "2.2.3",
   "paths": {
-    "testProjectFolder": "C:\\Projects\\ISSUES\\SimpleCheckboxSetSelector_Ticket_Issue4GH\\",
+    "testProjectFolder": "./test/",
     "testProjectFileName": "Test.mpr"
   },
   "scripts": {
