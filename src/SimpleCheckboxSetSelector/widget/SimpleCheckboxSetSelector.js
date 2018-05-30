@@ -228,7 +228,7 @@ define([
 					this.subscribe({
 						guid: this._contextObj.getGuid(),
 						callback: dojoLang.hitch(this, function (guid) {
-							this._updateRendering();
+							this._setCheckboxOptions();
 						})
 					});
 
@@ -237,7 +237,7 @@ define([
 						guid: this._contextObj.getGuid(),
 						attr: this._reference,
 						callback: dojoLang.hitch(this, function (guid, attr, attrValue) {
-							this._updateRendering();
+							this._setCheckboxOptions();
 						})
 					});
 				}
