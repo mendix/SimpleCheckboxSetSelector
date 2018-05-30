@@ -39,6 +39,7 @@ define([
 			displayAttribute: "",
 			readonly: false,
 			onChangeMicroflow: "",
+			sortOnChecked: true,
 
 			// Internal variables. Non-primitives created in the prototype are shared between all widget instances.
 			_direction: "vertical",
@@ -304,9 +305,11 @@ define([
                     } else {
                         _unchecked.push(checkbox);
                     }
-                }
+				}
 
-                this._checkboxOptionsArray = _checked.concat(_unchecked);
+				if (this.sortOnChecked) {
+					this._checkboxOptionsArray = _checked.concat(_unchecked);
+				}
 
 				this._updateRendering();
 			},
@@ -540,7 +543,7 @@ define([
 				}, this);
 			}
 		});
-	});
-require(["SimpleCheckboxSetSelector/widget/SimpleCheckboxSetSelector"], function () {
-	"use strict";
-});
+	}
+);
+
+require(["SimpleCheckboxSetSelector/widget/SimpleCheckboxSetSelector"]);
