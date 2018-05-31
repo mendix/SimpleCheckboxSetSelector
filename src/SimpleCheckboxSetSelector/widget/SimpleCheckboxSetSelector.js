@@ -46,7 +46,6 @@ define([
             _entity: null,
             _labelAttribute: null,
             _reference: null,
-            _handles: null,
             _contextObj: null,
             _alertDiv: null,
             _checkboxOptions: null,
@@ -57,18 +56,13 @@ define([
             _checkboxesArr: null,
             _showMoreHidden: true,
             _showMoreButtonHandler: null,
-
             _showMoreStarted: false,
+            _oldReferenceObjects: [],
 
             /**
              * Mendix Widget methods.
              * ======================
              */
-            constructor: function () {
-                // Uncomment next line to start debugging
-                //logger.level(logger.DEBUG);
-                this._handles = [];
-            },
 
             // DOJO.WidgetBase -> PostCreate is fired after the properties of the widget are set.
             postCreate: function () {
@@ -271,6 +265,11 @@ define([
                 this._checkboxOptions = {};
                 this._checkboxOptionsArray = [];
 
+                if (!objs) {
+                    this._updateRendering();
+                    return;
+                }
+
                 for (var i = 0; i < objs.length; i++) {
                     var mxObj = objs[i];
                     this._checkboxOptions[mxObj.getGuid()] = mxObj.get(this.displayAttribute);
@@ -283,6 +282,7 @@ define([
                     };
 
                     var referencedObjects = this._contextObj.get(this._reference);
+
                     if (referencedObjects !== null && referencedObjects !== "") {
                         dojoArray.forEach(referencedObjects, function (ref, i) {
                             if (mxObj.getGuid() === ref) {
@@ -328,6 +328,10 @@ define([
                 this._checkboxesArr = [];
 
                 if (this.direction === "horizontal") {
+                    dojoConstruct.empty(this.checkboxComboContainer);
+                }
+
+                if (this._checkboxOptionsArray.length === 0) {
                     dojoConstruct.empty(this.checkboxComboContainer);
                 }
 
