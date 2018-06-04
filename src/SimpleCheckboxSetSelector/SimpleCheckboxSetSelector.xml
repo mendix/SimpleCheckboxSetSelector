@@ -101,6 +101,11 @@
 			<category>Display</category>
 			<description>If this is larger than zero, only that amount of items will be shown first. All others will behind a Show More button.</description>
 		</property>
+		<property key="sortOnChecked" type="boolean" defaultValue="true">
+			<caption>Sort on checked</caption>
+			<category>Display</category>
+			<description>This will sort the checkboxes based on the checked value. All items that are checked, will be placed first</description>
+		</property>
 		<!-- TODO
 		<property key="addSelectAll" type="boolean" defaultValue="true">
 			<caption>Add Select All</caption>
