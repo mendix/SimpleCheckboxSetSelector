@@ -324,7 +324,10 @@ define([
                     enclosingDivElement = null,
                     nodelength = 0;
 
-                nodelength = this.checkboxComboContainer.children.length;
+                if (this.checkboxComboContainer && this.checkboxComboContainer.children) {
+                    nodelength = this.checkboxComboContainer.children.length;
+                }
+
                 this._checkboxesArr = [];
 
                 if (this.direction === "horizontal") {
@@ -333,6 +336,10 @@ define([
 
                 if (this._checkboxOptionsArray.length === 0) {
                     dojoConstruct.empty(this.checkboxComboContainer);
+                }
+
+                if (null === this.checkboxComboContainer) {
+                    return;
                 }
 
                 for (var o = 0; o < this._checkboxOptionsArray.length; o++) {
@@ -348,7 +355,7 @@ define([
                             this._checkboxesArr.push(checkboxNode);
                         } else {
                             //an enclosing div element is required to vertically align a  in bootstrap.
-                            if (this.checkboxComboContainer.children[i]) {
+                            if (this.checkboxComboContainer && this.checkboxComboContainer.children[i]) {
                                 enclosingDivElement = this.checkboxComboContainer.children[i];
                             } else {
                                 enclosingDivElement = dojoConstruct.create("div", {
@@ -356,7 +363,7 @@ define([
                                 });
                             }
                             dojoConstruct.place(labelNode, enclosingDivElement, "only");
-                            if (!this.checkboxComboContainer.children[i]) {
+                            if (!this.checkboxComboContainer || !this.checkboxComboContainer.children[i]) {
                                 dojoConstruct.place(enclosingDivElement, this.checkboxComboContainer, "last");
                             }
                             this._checkboxesArr.push(enclosingDivElement);
