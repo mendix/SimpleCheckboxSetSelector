@@ -40,6 +40,8 @@ define([
             readonly: false,
             onChangeMicroflow: "",
             sortOnChecked: true,
+            showMoreString: "",
+            showLessString: "",
 
             // Internal variables. Non-primitives created in the prototype are shared between all widget instances.
             _direction: "vertical",
@@ -386,7 +388,7 @@ define([
                         dojoClass.add(node, "showmore-hidden");
                     }
                 }
-                this.showMoreButton.innerHTML = "Show more";
+                this.showMoreButton.innerHTML = this.showMoreString;
                 this.showMoreHidden = true;
             },
 
@@ -399,7 +401,7 @@ define([
                     }
                 }
 
-                this.showMoreButton.innerHTML = "Hide";
+                this.showMoreButton.innerHTML = this.showLessString;
                 this.showMoreHidden = false;
             },
 

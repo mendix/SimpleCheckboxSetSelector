@@ -101,6 +101,24 @@
 			<category>Display</category>
 			<description>If this is larger than zero, only that amount of items will be shown first. All others will behind a Show More button.</description>
 		</property>
+		<property key="showMoreString" type="translatableString" required="false">
+			<caption>Show more label</caption>
+			<category>Display</category>
+			<description>Set the label when more items are available.</description>
+			<translations>
+			 <translation lang="en_US">Show more</translation>
+			 <translation lang="nl_NL">Toon meer</translation>
+			</translations>
+		</property>
+		<property key="showLessString" type="translatableString" required="false">
+			<caption>Show less label</caption>
+			<category>Display</category>
+			<description>Set the label for hiding items.</description>
+			<translations>
+			 <translation lang="en_US">Hide</translation>
+			 <translation lang="nl_NL">Verberg</translation>
+			</translations>
+		</property>
 		<property key="sortOnChecked" type="boolean" defaultValue="true">
 			<caption>Sort on checked</caption>
 			<category>Display</category>
@@ -131,4 +149,3 @@
 		</property>
 	</properties>
 </widget>
-
