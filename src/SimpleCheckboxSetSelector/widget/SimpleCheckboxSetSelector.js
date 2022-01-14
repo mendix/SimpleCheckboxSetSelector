@@ -386,7 +386,9 @@ define([
                         dojoClass.add(node, "showmore-hidden");
                     }
                 }
-                this.showMoreButton.innerHTML = "Show more";
+                this.showMoreButton.classList.remove("showmore-showLess");
+                this.showMoreButton.classList.add("showmore-showMore");
+                this.showMoreButton.innerHTML = "Show More";
                 this.showMoreHidden = true;
             },
 
@@ -399,7 +401,9 @@ define([
                     }
                 }
 
-                this.showMoreButton.innerHTML = "Hide";
+                this.showMoreButton.classList.remove("showmore-showMore");
+                this.showMoreButton.classList.add("showmore-showLess");
+                this.showMoreButton.innerHTML = "Show Less";
                 this.showMoreHidden = false;
             },
 
