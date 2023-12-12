@@ -66,7 +66,7 @@ define([
 
             // DOJO.WidgetBase -> PostCreate is fired after the properties of the widget are set.
             postCreate: function () {
-                logger.debug(this.id + ".postCreate");
+                console.debug(this.id + ".postCreate");
                 this._checkboxesArr = [];
                 this._entity = this.dataAssociation.split("/")[1];
                 this._reference = this.dataAssociation.split("/")[0];
@@ -115,7 +115,7 @@ define([
              */
 
             update: function (obj, callback) {
-                logger.debug(this.id + ".update");
+                console.debug(this.id + ".update");
 
                 this._contextObj = obj;
                 this._resetSubscriptions();
@@ -125,7 +125,7 @@ define([
             },
 
             _setCheckboxOptions: function () {
-                logger.debug(this.id + "._setCheckboxOptions");
+                console.debug(this.id + "._setCheckboxOptions");
 
                 if (this._contextObj) {
                     if (this.dataSourceType === "xpath") {
@@ -143,7 +143,7 @@ define([
 
             // Rerender the interface.
             _updateRendering: function () {
-                logger.debug(this.id + "._updateRendering");
+                console.debug(this.id + "._updateRendering");
 
                 if (this._contextObj !== null) {
                     if (dojoClass.contains(this.domNode, "hidden")) {
@@ -162,7 +162,7 @@ define([
 
             // Handle validations.
             _handleValidation: function (validations) {
-                logger.debug(this.id + "._handleValidation");
+                console.debug(this.id + "._handleValidation");
                 this._clearValidations();
 
                 var validation = validations[0],
@@ -179,14 +179,14 @@ define([
 
             // Clear validations.
             _clearValidations: function () {
-                logger.debug(this.id + "._clearValidations");
+                console.debug(this.id + "._clearValidations");
                 dojoConstruct.destroy(this._alertDiv);
                 this._alertDiv = null;
             },
 
             // Show an error message.
             _showError: function (message) {
-                logger.debug(this.id + "._showError");
+                console.debug(this.id + "._showError");
                 if (this._alertDiv !== null) {
                     dojoHtml.set(this._alertDiv, message);
                     return true;
@@ -200,13 +200,13 @@ define([
 
             // Add a validation.
             _addValidation: function (message) {
-                logger.debug(this.id + "._addValidation");
+                console.debug(this.id + "._addValidation");
                 this._showError(message);
             },
 
             // Reset subscriptions.
             _resetSubscriptions: function () {
-                logger.debug(this.id + "._resetSubscriptions");
+                console.debug(this.id + "._resetSubscriptions");
                 this.unsubscribeAll();
                 if (this._contextObj) {
                     //validationHandle =
@@ -236,7 +236,7 @@ define([
             },
 
             _getDataFromXPath: function () {
-                logger.debug(this.id + "._getDataFromXPath");
+                console.debug(this.id + "._getDataFromXPath");
                 if (this._contextObj) {
                     mx.data.get({
                         xpath: "//" + this._entity + this.constraint.replace(/\[%CurrentObject%\]/g, this._contextObj.getGuid()),
@@ -255,12 +255,12 @@ define([
             },
 
             _getDataFromDatasource: function () {
-                logger.debug(this.id + "._getDataFromDatasource");
+                console.debug(this.id + "._getDataFromDatasource");
                 this._execMF(this._contextObj, this.datasourceMf, dojoLang.hitch(this, this._populateCheckboxOptions));
             },
 
             _populateCheckboxOptions: function (objs) {
-                logger.debug(this.id + "._populateCheckboxOptions");
+                console.debug(this.id + "._populateCheckboxOptions");
 
                 this._checkboxOptions = {};
                 this._checkboxOptionsArray = [];
@@ -315,7 +315,7 @@ define([
 
 
             _createCheckboxNodes: function (mxObjArr) {
-                logger.debug(this.id + "._createCheckboxNodes");
+                console.debug(this.id + "._createCheckboxNodes");
                 var mxObj = null,
                     i = 0,
                     j = 0,
@@ -379,7 +379,7 @@ define([
             },
 
             _setShowMoreHidden: function () {
-                logger.debug(this.id + "._setShowMoreHidden");
+                console.debug(this.id + "._setShowMoreHidden");
                 for (var i = 0; i < this._checkboxesArr.length; i++) {
                     var node = this._checkboxesArr[i];
                     if (i >= this.showMore) {
@@ -393,7 +393,7 @@ define([
             },
 
             _setShowMoreShown: function () {
-                logger.debug(this.id + "._setShowMoreShown");
+                console.debug(this.id + "._setShowMoreShown");
                 for (var i = 0; i < this._checkboxesArr.length; i++) {
                     var node = this._checkboxesArr[i];
                     if (dojoClass.contains(node, "showmore-hidden")) {
@@ -408,7 +408,7 @@ define([
             },
 
             _enableShowMore: function () {
-                logger.debug(this.id + "._enableShowMore");
+                console.debug(this.id + "._enableShowMore");
                 if (!this._showMoreStarted) {
                     this._setShowMoreHidden();
                     this._showMoreStarted = true;
@@ -427,7 +427,7 @@ define([
             },
 
             _createLabelNode: function (key, value) {
-                logger.debug(this.id + "._createLabelNode");
+                console.debug(this.id + "._createLabelNode");
                 var labelNode = null,
                     spanNode = null;
 
@@ -455,7 +455,7 @@ define([
             },
 
             _createCheckboxNode: function (key, value, index) {
-                logger.debug(this.id + "._createCheckboxNode");
+                console.debug(this.id + "._createCheckboxNode");
                 var checkboxNode = null,
                     referencedObjects = this._contextObj.get(this._reference);
 
@@ -488,7 +488,7 @@ define([
             },
 
             _addOnclickToCheckboxItem: function (checkboxNode, rbvalue) {
-                logger.debug(this.id + "._addOnclickToCheckboxItem");
+                console.debug(this.id + "._addOnclickToCheckboxItem");
 
                 this.connect(checkboxNode, "onclick", dojoLang.hitch(this, function () {
 
@@ -526,7 +526,7 @@ define([
             },
 
             _execMF: function (obj, mf, callback) {
-                logger.debug(this.id + "._execMF", mf);
+                console.debug(this.id + "._execMF", mf);
                 var params = {
                     applyto: "selection",
                     actionname: mf,
