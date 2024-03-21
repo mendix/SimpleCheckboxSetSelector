@@ -95,7 +95,7 @@ define([
                         dojoClass.add(this.checkboxComboContainer, comboControlClass);
                     }
 
-                    this.checkboxLabel.innerHTML = this.fieldCaption;
+                    this.checkboxLabel.textContent = this.fieldCaption;
                 } else {
                     if (!dojoClass.contains(this.checkboxLabel, "hidden")) {
                         dojoClass.add(this.checkboxLabel, "hidden");
@@ -193,7 +193,7 @@ define([
                 }
                 this._alertDiv = dojoConstruct.create("div", {
                     "class": "alert alert-danger",
-                    "innerHTML": message
+                    "textContent": message
                 });
                 dojoConstruct.place(this._alertDiv, this.checkboxComboContainer);
             },
@@ -388,7 +388,7 @@ define([
                 }
                 this.showMoreButton.classList.remove("showmore-showLess");
                 this.showMoreButton.classList.add("showmore-showMore");
-                this.showMoreButton.innerHTML = "Show More";
+                this.showMoreButton.textContent = "Show More";
                 this.showMoreHidden = true;
             },
 
@@ -403,7 +403,7 @@ define([
 
                 this.showMoreButton.classList.remove("showmore-showMore");
                 this.showMoreButton.classList.add("showmore-showLess");
-                this.showMoreButton.innerHTML = "Show Less";
+                this.showMoreButton.textContent = "Show Less";
                 this.showMoreHidden = false;
             },
 
@@ -448,7 +448,7 @@ define([
                 }
 
                 spanNode = dojoConstruct.place(dojoConstruct.create("span", {
-                    "innerHTML": value
+                    "textContent": value
                 }), labelNode);
 
                 return labelNode;
